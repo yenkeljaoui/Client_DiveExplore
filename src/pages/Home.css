@@ -1,0 +1,28 @@
+/* src/pages/Home.css */
+
+.home-container {
+  height: 125vh;
+  background-image: url('../assets/images/background.jpg');
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 1px 1px 2px black;
+}
+
+.home-container h1 {
+  font-size: 2.3em;
+  margin-bottom: 20px; /* Ajuste l'espace entre le titre et le paragraphe */
+  color: rgb(0, 71, 249);
+  margin-top: -300px; 
+
+}
+
+.home-container p {
+  font-size: 1.5em;
+  margin: 0; /* Supprime les marges */
+  color: rgb(255, 0, 230);
+}

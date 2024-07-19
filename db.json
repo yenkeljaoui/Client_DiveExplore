@@ -1,0 +1,32 @@
+{
+  "about": {
+    "content": "This is a short description about our group members and our project, DiveExplore. DiveExplore is a social network designed to connect people and share experiences about the diving explorations."
+  },
+  "team": [
+    {
+      "name": "Yoeli Barthel",
+      "role": "Developer"
+    },
+    {
+      "name": "Yoan Hagiel",
+      "role": " Developer"
+    },
+    {
+      "name": "Dan Zaburoff",
+      "role": "Developer"
+    },
+    {
+      "name": "Dan Avitan ",
+      "role": "Developer"
+    },
+    {
+      "name": "Gabriel Bensahmoun",
+      "role": "Developer"
+    },
+    {
+      "name": "Yenkel Jaoui",
+      "role": "Developer"
+    }
+  ]
+}
+
