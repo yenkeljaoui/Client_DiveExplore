@@ -11,6 +11,10 @@
     background-repeat: no-repeat;
   }
   
+  .signup-title {
+    color: rgb(175, 8, 125);
+  }
+  
   .signup-form {
     display: flex;
     flex-direction: column;
@@ -29,10 +33,15 @@
     font-size: 16px;
   }
   
+  .show-password-label {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
   .signup-button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #007bffa3; /* Nouvelle couleur du bouton */
     color: white;
     border: none;
     border-radius: 4px;
@@ -53,12 +62,12 @@
   
   .signin-link span {
     margin-right: 10px;
-    color: violet; /* Ajoutez cette ligne pour rendre la phrase violette */
+    color: violet; /* Couleur violette pour la phrase */
   }
   
   .signin-button-link {
     padding: 5px 10px;
-    background-color: #007bff;
+    background-color: #007bffa3; /* Nouvelle couleur du bouton */
     color: white;
     border: none;
     border-radius: 4px;

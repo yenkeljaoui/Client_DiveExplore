@@ -11,6 +11,10 @@
     background-repeat: no-repeat;
   }
   
+  .signin-title {
+    color: rgb(175, 8, 125);
+  }
+  
   .signin-form {
     display: flex;
     flex-direction: column;
@@ -29,10 +33,15 @@
     font-size: 16px;
   }
   
+  .show-password-label {
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  
   .signin-button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #007bff;
+    background-color: #007bffa3; /* Nouvelle couleur du bouton */
     color: white;
     border: none;
     border-radius: 4px;
@@ -42,6 +51,32 @@
   }
   
   .signin-button:hover {
+    background-color: #0056b3;
+  }
+  
+  .signup-link {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .signup-link span {
+    margin-right: 10px;
+    color: violet; /* Couleur violette pour la phrase */
+  }
+  
+  .signup-button-link {
+    padding: 5px 10px;
+    background-color: #007bffa3; /* Nouvelle couleur du bouton */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .signup-button-link:hover {
     background-color: #0056b3;
   }
   

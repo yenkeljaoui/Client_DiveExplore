@@ -8,6 +8,7 @@ export default function SignUp(props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const handleSignUp = () => {
@@ -50,7 +51,7 @@ export default function SignUp(props) {
 
   return (
     <div className="signup-container">
-      <h1>DiveExplore</h1>
+      <h1 className="signup-title">DiveExplore</h1>
       <div className="signup-form">
         <input
           value={username}
@@ -70,16 +71,24 @@ export default function SignUp(props) {
           value={password}
           onChange={(ev) => setPassword(ev.target.value)}
           placeholder="Password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           className="signup-input"
         />
         <input
           value={confirmPassword}
           onChange={(ev) => setConfirmPassword(ev.target.value)}
           placeholder="Confirm password"
-          type="password"
+          type={showPassword ? 'text' : 'password'}
           className="signup-input"
         />
+        <label className="show-password-label">
+          <input
+            type="checkbox"
+            checked={showPassword}
+            onChange={() => setShowPassword(!showPassword)}
+          />
+          Show Password
+        </label>
       </div>
       <button onClick={handleSignUp} className="signup-button">
         Send
@@ -87,10 +96,9 @@ export default function SignUp(props) {
       <div className="signin-link">
         <span>Already have an account?</span>
         <Link to="/signin">
-          <button className="signin-button-link"> Sign In </button>
+          <button className="signin-button-link">Sign In</button>
         </Link>
       </div>
     </div>
   );
 }
-
