@@ -38,7 +38,7 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
+      <NavBar isAuthenticated={!!currentUser} />
       <Routes>
         <Route path="/signin" element={<SignIn signin={signin} />} />
         <Route path="/signup" element={<SignUp addUser={addUser} />} />
@@ -60,5 +60,3 @@ function App() {
 }
 
 export default App;
-
-
