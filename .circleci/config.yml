@@ -56,14 +56,14 @@ jobs:
           name: Run lint
           command: npm run lint
 
-  deploy:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: Deploy application
-          command: ./deploy.sh
+  # deploy:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Deploy application
+  #         command: ./deploy.sh
 
 workflows:
   build-and-test:
