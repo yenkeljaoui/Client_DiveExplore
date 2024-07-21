@@ -1,11 +1,8 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:node:.
 version: 2.1
 orbs:
   node: circleci/node@5
- jobs: 
+jobs: 
   test-node:
-    # Install node dependencies and run tests
     executor: node/default
     steps:
       - checkout
@@ -14,25 +11,26 @@ orbs:
       - run:
           name: Run tests
           command: npm test 
-
       - run:
-          name: run lint
+          name: Run lint
           command: npm run lint
+      - run:
+          name: Build project
+          command: npm run build
  
-  # deploy:
-  #   # This is an example deploy job, not actually used by the workflow
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     # Replace this with steps to deploy to users
-  #     - run:
-  #         name: deploy
-  #         command: '#e.g. ./deploy.sh'
+  deploy:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: Deploy application
+          command: ./deploy.sh
+
 workflows:
   build-and-test:
     jobs:
       - test-node
-      
-    # - deploy:
-    #     requires:
-    #       - build-node
+      - deploy:
+          requires:
+            - test-node
