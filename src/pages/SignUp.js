@@ -1,6 +1,6 @@
 // src/pages/SignUp.js
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, NavLink  } from 'react-router-dom';
 import './SignUp.css'; // Ajoutez ce fichier CSS pour le style
 
 export default function SignUp(props) {
@@ -95,9 +95,9 @@ export default function SignUp(props) {
       </button>
       <div className="signin-link">
         <span>Already have an account?</span>
-        <Link to="/signin">
+        <NavLink  to="/signin">
           <button className="signin-button-link">Sign In</button>
-        </Link>
+        </NavLink >
       </div>
     </div>
   );
