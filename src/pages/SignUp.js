@@ -1,7 +1,6 @@
-// src/pages/SignUp.js
 import React, { useState } from 'react';
-import { useNavigate, NavLink  } from 'react-router-dom';
-import './SignUp.css'; // Ajoutez ce fichier CSS pour le style
+import { useNavigate, Link } from 'react-router-dom';
+import './SignUp.css'; // Add this CSS file for styling
 
 export default function SignUp(props) {
   const [username, setUsername] = useState('');
@@ -11,7 +10,7 @@ export default function SignUp(props) {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignUp = () => {
+  const handleSignUp = async () => {
     if (!username.trim()) {
       alert('Username must contain at least one value');
       return;
@@ -43,10 +42,31 @@ export default function SignUp(props) {
 
     const newUser = {
       username,
+      email,
       password,
     };
-    props.addUser(newUser);
-    navigate('/signin');
+
+    try {
+      const response = await fetch('https://serverdiveexplore-1.onrender.com/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(newUser),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        alert('Signup successful!');
+        props.addUser(newUser);
+        navigate('/signin');
+      } else {
+        const error = await response.json();
+        alert(`Signup failed: ${error.message}`);
+      }
+    } catch (error) {
+      alert(`Signup failed: ${error.message}`);
+    }
   };
 
   return (
@@ -95,9 +115,9 @@ export default function SignUp(props) {
       </button>
       <div className="signin-link">
         <span>Already have an account?</span>
-        <NavLink  to="/signin">
+        <Link to="/signin">
           <button className="signin-button-link">Sign In</button>
-        </NavLink >
+        </Link>
       </div>
     </div>
   );
