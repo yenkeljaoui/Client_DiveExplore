@@ -1,3 +1,44 @@
+# version: 2.1
+# orbs:
+#   node: circleci/node@5
+# jobs: 
+#   test-node:
+#     executor: node/default
+#     steps:
+#       - checkout
+#       - node/install-packages:
+#           pkg-manager: npm
+#       - run:
+#           name: Run tests
+#           command: npm test 
+#       - run:
+#           name: Run lint
+#           command: npm run lint
+#       - run:
+#           name: Build project
+#           command: npm run build
+ 
+#   deploy:
+#     docker:
+#       - image: cimg/base:stable
+#     steps:
+#       - checkout
+#       - run:
+#           name: Deploy application
+#           command: ./deploy.sh
+
+# workflows:
+#   build-and-test:
+#     jobs:
+#       - test-node
+#       - deploy:
+#           requires:
+#             - test-node
+
+
+
+
+
 version: 2.1
 orbs:
   node: circleci/node@5
@@ -14,10 +55,7 @@ jobs:
       - run:
           name: Run lint
           command: npm run lint
-      - run:
-          name: Build project
-          command: npm run build
- 
+
   deploy:
     docker:
       - image: cimg/base:stable
