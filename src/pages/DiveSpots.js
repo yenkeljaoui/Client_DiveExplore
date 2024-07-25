@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import './DiveSpots.css';
 
 const fetchDivingSpots = async () => {
   try {
-    const response = await fetch('http://localhost:3001');
+    const response = await fetch('http://localhost:3001/dive-spots');
     const spots = await response.json();
-    console.log('Fetched diving spots:', spots);
     return spots;
   } catch (error) {
     console.error('Error fetching diving spots:', error);
@@ -34,7 +34,7 @@ const sortSpotsByDistance = (spots, userLatitude, userLongitude) => {
   });
 };
 
-const DiveSpots = () => {
+const DivingSpots = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [divingSpots, setDivingSpots] = useState([]);
 
@@ -42,7 +42,6 @@ const DiveSpots = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
-        console.log('User\'s location:', { latitude, longitude });
         setUserLocation({ latitude, longitude });
       },
       (error) => {
@@ -65,12 +64,12 @@ const DiveSpots = () => {
   }, [userLocation]);
 
   return (
-    <div style={{ textAlign: 'center' }}>
-      <h1>Diving Spots Around the World</h1>
+    <div className='spots-container'>
+      <h1 className='spots-title'>Diving Spots Around the World</h1>
       <div>
         {divingSpots.map((spot) => (
-          <div key={spot.id} style={{ margin: '10px 0' }}>
-            <Link to={`/dive-spot/${spot.id}`}>
+          <div key={spot.id} className='spot-item'>
+            <Link to={`/dive-spot/${spot.id}`} className='spot-link'>
               {spot.name} - {spot.location}
             </Link>
           </div>
@@ -80,4 +79,4 @@ const DiveSpots = () => {
   );
 };
 
-export default DiveSpots;
+export default DivingSpots;

@@ -1,0 +1,48 @@
+/* src/pages/DiveSpots.css */
+
+.spots-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: auto;
+    background-color: #f0f8ff; /* Light blue background */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: #333; /* Dark text color */
+  }
+  
+  .spots-title {
+    text-align: center;
+    color: #007bff; /* Blue color for title */
+    font-size: 2em;
+    margin-bottom: 20px;
+  }
+  
+  .spot-item {
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #fff; /* White background for spot items */
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s ease;
+  }
+  
+  .spot-item:hover {
+    background-color: #e7f3ff; /* Light blue background on hover */
+  }
+  
+  .spot-link {
+    text-decoration: none;
+    color: #007bff; /* Blue color for links */
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .spot-link:hover {
+    text-decoration: underline;
+  }
+  
+  .spot-location {
+    font-size: 1em;
+    color: #555; /* Dark gray color for location */
+  }
+  
