@@ -19,7 +19,7 @@ function App() {
   const [diveSpots, setDiveSpots] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3001/diving-spots')
+    fetch('http://localhost:3001/dive-spots')
       .then((response) => response.json())
       .then((data) => setDiveSpots(data))
       .catch((error) => console.error('Error fetching diving spots:', error));
@@ -44,7 +44,7 @@ function App() {
     const formData = new FormData();
     formData.append('photo', photoDataUrl);
 
-    fetch(`http://localhost:3001/diving-spots/${spotId}/photos`, {
+    fetch(`http://localhost:3001/dive-spots/${spotId}/photo`, {
       method: 'POST',
       body: formData,
     })
@@ -58,24 +58,24 @@ function App() {
   };
 
   const addFish = (spotId, fishName) => {
-    fetch(`http://localhost:3001/diving-spots/${spotId}/fish`, {
+    fetch(`http://localhost:3001/dive-spots/${spotId}/fish`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ fish: fishName })
+      body: JSON.stringify({ fishName })
     })
       .then((response) => response.json())
       .then((data) => {
         setDiveSpots((prevSpots) =>
-          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, fish: [...spot.fish, data.fish] } : spot))
+          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, fish: data } : spot))
         );
       })
       .catch((error) => console.error('Error adding fish:', error));
   };
 
   const likeSpot = (spotId) => {
-    fetch(`http://localhost:3001/diving-spots/${spotId}/like`, {
+    fetch(`http://localhost:3001/dive-spots/${spotId}/like`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -85,14 +85,14 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setDiveSpots((prevSpots) =>
-          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, likes: data.likes } : spot))
+          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, likes: data.likes, dislikes: data.dislikes } : spot))
         );
       })
       .catch((error) => console.error('Error liking spot:', error));
   };
 
   const dislikeSpot = (spotId) => {
-    fetch(`http://localhost:3001/diving-spots/${spotId}/dislike`, {
+    fetch(`http://localhost:3001/dive-spots/${spotId}/dislike`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -102,7 +102,7 @@ function App() {
       .then((response) => response.json())
       .then((data) => {
         setDiveSpots((prevSpots) =>
-          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, dislikes: data.dislikes } : spot))
+          prevSpots.map((spot) => (spot.id === spotId ? { ...spot, likes: data.likes, dislikes: data.dislikes } : spot))
         );
       })
       .catch((error) => console.error('Error disliking spot:', error));
@@ -117,7 +117,7 @@ function App() {
         <Route path="/" element={currentUser ? <Home /> : <Navigate to="/signin" />} />
         <Route path="/about" element={currentUser ? <About /> : <Navigate to="/signin" />} />
         <Route path="/list-of-dives" element={currentUser ? <DiveSpots diveSpots={diveSpots} /> : <Navigate to="/signin" />} />
-        <Route path="/dive-spot/:id" element={currentUser ? <DiveSpotDetails diveSpots={diveSpots} addPhoto={addPhoto} addFish={addFish} likeSpot={likeSpot} dislikeSpot={dislikeSpot} /> : <Navigate to="/signin" />} />
+        <Route path="/dive-spot/:id" element={currentUser ? <DiveSpotDetails currentUser={currentUser} /> : <Navigate to="/signin" />} />
         <Route path="/:username" element={currentUser ? <Home /> : <Navigate to="/signin" />} />
       </Routes>
     </div>

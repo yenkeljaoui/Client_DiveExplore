@@ -88,8 +88,8 @@ const DiveSpotDetails = ({ currentUser }) => {
         method: 'POST',
         body: formData
       });
-      const imageDataUrl = await response.json();
-      setSpot((prevSpot) => ({ ...prevSpot, images: [...prevSpot.images, imageDataUrl] }));
+      const imageUrl = await response.json();
+      setSpot((prevSpot) => ({ ...prevSpot, images: [...prevSpot.images, imageUrl] }));
     } catch (error) {
       console.error('Error adding photo:', error);
     }

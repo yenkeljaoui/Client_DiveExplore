@@ -1,38 +1,45 @@
-/* src/pages/DiveSpots.css */
-
 .spots-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: auto;
-    background-color: #f0f8ff; /* Light blue background */
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: #333; /* Dark text color */
+    height: 155vh;
+    background-image: url('../assets/images/background_DiveSpots.jpg'); /* Image de fond */
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    text-shadow: 1px 1px 2px black;
   }
   
   .spots-title {
     text-align: center;
-    color: #007bff; /* Blue color for title */
+    color: #de65ff; /* Couleur violette pour le titre */
     font-size: 2em;
-    margin-bottom: 20px;
+    margin-top: 20px; /* Espace en haut pour le titre */
+  }
+  
+  .spots-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px; /* Espace entre le titre et la liste des spots */
   }
   
   .spot-item {
     margin: 10px 0;
     padding: 10px;
-    background-color: #fff; /* White background for spot items */
+    background-color: rgba(30, 59, 155, 0.788); /* Fond bleu clair pour les éléments de spot avec transparence */
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 4px rgba(172, 22, 22, 0.1);
     transition: background-color 0.3s ease;
   }
   
   .spot-item:hover {
-    background-color: #e7f3ff; /* Light blue background on hover */
+    background-color: rgba(231, 243, 255, 0.8); /* Fond bleu plus clair au survol avec transparence */
   }
   
   .spot-link {
     text-decoration: none;
-    color: #007bff; /* Blue color for links */
+    color: #cb284e; /* Couleur bleue pour les liens */
     font-size: 1.2em;
     font-weight: bold;
   }
@@ -43,6 +50,6 @@
   
   .spot-location {
     font-size: 1em;
-    color: #555; /* Dark gray color for location */
+    color: #000000; /* Couleur noire pour la localisation */
   }
   
