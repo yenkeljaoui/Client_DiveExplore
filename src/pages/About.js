@@ -25,7 +25,7 @@ const About = () => {
         }
       })
       .catch(error => {
-        console.error('Error fetching about content:', error);
+        // console.error('Error fetching about content:', error);
         setError('Failed to load content. Please try again later.');
       });
   }, []);

@@ -57,7 +57,7 @@ export default function SignUp(props) {
       });
 
       if (response.ok) {
-        const result = await response.json();
+        // const result = await response.json();
         alert('Signup successful!');
         // props.addUser(newUser);
         navigate('/signin');
