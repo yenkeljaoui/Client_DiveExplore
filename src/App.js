@@ -9,31 +9,28 @@ import SignUp from './pages/SignUp';
 import DiveSpots from './pages/DiveSpots';
 import DiveSpotDetails from './pages/DiveSpotDetails';
 
-const initialUsers = [
-  {
-    username: 'yenkel',
-    password: 'Yenkel@23',
-  },
-];
-
 function App() {
-  const [users, setUsers] = useState(initialUsers);
   const [currentUser, setCurrentUser] = useState(null);
 
-  const addUser = (newUser) => {
-    setUsers((prevUsers) => [...prevUsers, newUser]);
-  };
-
-  const signin = (username, password) => {
-    const existingUser = users.find(
-      (user) => user.username === username && user.password === password
-    );
-    if (!existingUser) {
-      alert('User not found');
+  const handleSignIn = async (username, password) => {
+    try {
+      const response = await fetch('http://localhost:3001/signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        setCurrentUser(username); // Set the current user to the username
+        return username;
+      } else {
+        alert(data.message); // Show error message from server
+        return null;
+      }
+    } catch (err) {
+      console.error('Error during sign-in:', err);
+      alert('Error signing in');
       return null;
-    } else {
-      setCurrentUser(existingUser);
-      return existingUser.username;
     }
   };
 
@@ -41,31 +38,17 @@ function App() {
     <div className="App">
       <NavBar isAuthenticated={!!currentUser} />
       <Routes>
-        <Route path="/signin" element={<SignIn signin={signin} />} />
-        <Route path="/signup" element={<SignUp addUser={addUser} />} />
-        <Route
-          path="/"
-          element={currentUser ? <Home /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/about"
-          element={currentUser ? <About /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/list-of-dives"
-          element={currentUser ? <DiveSpots /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/dive-spot/:id"
-          element={currentUser ? <DiveSpotDetails /> : <Navigate to="/signin" />}
-        />
-        <Route
-          path="/:username"
-          element={currentUser ? <Home /> : <Navigate to="/signin" />}
-        />
+        <Route path="/signin" element={<SignIn signin={handleSignIn} />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/" element={currentUser ? <Home /> : <Navigate to="/signin" />} />
+        <Route path="/about" element={currentUser ? <About /> : <Navigate to="/signin" />} />
+        <Route path="/list-of-dives" element={currentUser ? <DiveSpots /> : <Navigate to="/signin" />} />
+        <Route path="/dive-spot/:id" element={currentUser ? <DiveSpotDetails /> : <Navigate to="/signin" />} />
+        <Route path="/:username" element={currentUser ? <Home /> : <Navigate to="/signin" />} />
       </Routes>
     </div>
   );
 }
 
 export default App;
+

@@ -47,7 +47,8 @@ export default function SignUp(props) {
     };
 
     try {
-      const response = await fetch('https://serverdiveexplore-1.onrender.com/signup', {
+      // const response = await fetch('https://serverdiveexplore-1.onrender.com/signup', {
+      const response = await fetch('http://localhost:3001/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +59,7 @@ export default function SignUp(props) {
       if (response.ok) {
         const result = await response.json();
         alert('Signup successful!');
-        props.addUser(newUser);
+        // props.addUser(newUser);
         navigate('/signin');
       } else {
         const error = await response.json();

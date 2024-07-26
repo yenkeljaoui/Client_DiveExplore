@@ -1,16 +1,15 @@
-// src/pages/SignIn.js
 import React, { useState } from 'react';
-import { useNavigate, NavLink  } from 'react-router-dom';
-import './SignIn.css'; // Ajoutez ce fichier CSS pour le style
+import { useNavigate, NavLink } from 'react-router-dom';
+import './SignIn.css'; // Add this CSS file for styling
 
-function SignIn(props) {
+function SignIn({ signin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  const handleSignIn = () => {
-    const user = props.signin(username, password);
+  const handleSignIn = async () => {
+    const user = await signin(username, password);
     if (user) {
       navigate('/');
     }
@@ -55,9 +54,9 @@ function SignIn(props) {
       </button>
       <div className="signup-link">
         <span>Don't have an account?</span>
-        <NavLink  to="/signup">
+        <NavLink to="/signup">
           <button className="signup-button-link">Sign Up</button>
-        </NavLink >
+        </NavLink>
       </div>
     </div>
   );
