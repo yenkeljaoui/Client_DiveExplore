@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
+import { Link } from 'react-router-dom';
 import './Home.css';
 import background from '../assets/images/background.jpg';
+import background2 from '../assets/images/background_2.jpg'; // Image de secours
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 Modal.setAppElement('#root');
 
@@ -15,14 +18,20 @@ const Home = ({ currentUser }) => {
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:3001/posts')
-      .then((response) => response.json())
-      .then((data) => {
-        const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      })
-      .catch((error) => console.error('Error fetching posts:', error));
+    fetchPosts();
   }, []);
+
+  const fetchPosts = async () => {
+    try {
+      const response = await fetch('http://localhost:3001/posts');
+      if (!response.ok) throw new Error('Error fetching posts');
+      const data = await response.json();
+      const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
+    }
+  };
 
   const handleLike = async (postId) => {
     try {
@@ -36,7 +45,7 @@ const Home = ({ currentUser }) => {
 
       if (response.ok) {
         const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post.id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPosts(sortedPosts);
       } else {
         const errorMessage = await response.text();
@@ -61,7 +70,7 @@ const Home = ({ currentUser }) => {
     if (!commentText.trim()) return;
 
     try {
-      const response = await fetch(`http://localhost:3001/posts/${selectedPost.id}/comment`, {
+      const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -71,7 +80,7 @@ const Home = ({ currentUser }) => {
 
       if (response.ok) {
         const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post.id === selectedPost.id ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        const sortedPosts = posts.map(post => post._id === selectedPost._id ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         setPosts(sortedPosts);
         setSelectedPost(updatedPost);
         setCommentText('');
@@ -97,7 +106,7 @@ const Home = ({ currentUser }) => {
   };
 
   const handleCreateNewPost = async () => {
-    if (!newPostTitle.trim() || !newPostDescription.trim()) return;
+    if (!newPostTitle.trim()) return;
 
     const formData = new FormData();
     formData.append('title', newPostTitle);
@@ -135,34 +144,52 @@ const Home = ({ currentUser }) => {
   return (
     <div className="home-container" style={{ backgroundImage: `url(${background})` }}>
       <h1>Welcome to DiveExplore</h1>
-      <p>social network</p>
+      <p>Social Network</p>
       <button className="new-post-button" onClick={handleOpenNewPostModal}>New Post</button>
-      <div className="posts-container">
-        {posts.map(post => (
-          <div key={post.id} className="post">
-            <h3 className="post-title">{post.title}</h3>
-            <p className="post-description">{post.description}</p>
-            {post.media && (
-              post.media.endsWith('.mp4') ? (
-                <video controls src={post.media} />
-              ) : (
-                <img src={post.media} alt={post.title} />
-              )
-            )}
-            <div className="post-actions">
-              <button 
-                onClick={() => handleLike(post.id)}
-                disabled={post.likedBy.includes(currentUser)}
-              >
-                Like {post.likes}
-              </button>
-              <button onClick={() => handleOpenComments(post)}>Comment</button>
-              <button onClick={() => console.log('Share clicked')}>Share</button>
-              <button onClick={() => console.log('Save clicked')}>Save</button>
+      
+      {posts.length === 0 ? (
+        <p>No posts available</p>
+      ) : (
+        <div className="posts-container">
+          {posts.map(post => (
+            <div key={post._id} className="post">
+              <h3 className="post-title">{post.title}</h3>
+              {post.media && (
+                <img 
+                  src={`http://localhost:3001${post.media}`} 
+                  alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = background2;
+                    console.error('Error loading image:', post.media);
+                  }}
+                />
+              )}
+              <p className="post-description">{post.description}</p>
+              <div className="post-actions">
+                <button 
+                  onClick={() => handleLike(post._id)}
+                  disabled={post.likedBy.includes(currentUser)}
+                >
+                  <i className="fas fa-thumbs-up"></i> Like {post.likes}
+                </button>
+                <button onClick={() => handleOpenComments(post)}>
+                  <i className="fas fa-comment"></i> Comment
+                </button>
+                <button onClick={() => console.log('Share clicked')}>
+                  <i className="fas fa-share"></i> Share
+                </button>
+                <button onClick={() => console.log('Save clicked')}>
+                  <i className="fas fa-save"></i> Save
+                </button>
+              </div>
+              <p className="post-username">
+                <span>Posted by: </span>
+                <Link to={`/user/${post.username}`}>{post.username}</Link>
+              </p>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
 
       {selectedPost && (
         <Modal
@@ -208,11 +235,11 @@ const Home = ({ currentUser }) => {
         <textarea
           value={newPostDescription}
           onChange={(e) => setNewPostDescription(e.target.value)}
-          placeholder="Post Description"
+          placeholder="Post Description (Optional)"
         />
         <input 
           type="file"
-          accept="image/*,video/*"
+          accept="image/*"
           onChange={handleMediaChange}
         />
         <button onClick={handleCreateNewPost}>Submit</button>
@@ -223,4 +250,3 @@ const Home = ({ currentUser }) => {
 };
 
 export default Home;
-
