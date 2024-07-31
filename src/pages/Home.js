@@ -141,12 +141,60 @@ const Home = ({ currentUser }) => {
     setNewPostMedia(e.target.files[0]);
   };
 
+  const handleShare = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${postId}/share`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: currentUser })
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPosts(sortedPosts);
+      } else {
+        const errorMessage = await response.text();
+        console.error('Error sharing post:', errorMessage);
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error('Error sharing post:', error);
+    }
+  };
+  
+  const handleSave = async (postId) => {
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${postId}/save`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username: currentUser })
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        setPosts(sortedPosts);
+      } else {
+        const errorMessage = await response.text();
+        console.error('Error saving post:', errorMessage);
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error('Error saving post:', error);
+    }
+  };
+
   return (
     <div className="home-container" style={{ backgroundImage: `url(${background})` }}>
       <h1>Welcome to DiveExplore</h1>
       <p>Social Network</p>
       <button className="new-post-button" onClick={handleOpenNewPostModal}>New Post</button>
-      
+  
       {posts.length === 0 ? (
         <p>No posts available</p>
       ) : (
@@ -172,14 +220,20 @@ const Home = ({ currentUser }) => {
                 >
                   <i className="fas fa-thumbs-up"></i> Like {post.likes}
                 </button>
+                <button 
+                  onClick={() => handleShare(post._id)}
+                  disabled={post.sharedBy.includes(currentUser)}
+                >
+                  <i className="fas fa-share"></i> Share {post.shares}
+                </button>
+                <button 
+                  onClick={() => handleSave(post._id)}
+                  disabled={post.savedBy.includes(currentUser)}
+                >
+                  <i className="fas fa-save"></i> Save
+                </button>
                 <button onClick={() => handleOpenComments(post)}>
                   <i className="fas fa-comment"></i> Comment
-                </button>
-                <button onClick={() => console.log('Share clicked')}>
-                  <i className="fas fa-share"></i> Share
-                </button>
-                <button onClick={() => console.log('Save clicked')}>
-                  <i className="fas fa-save"></i> Save
                 </button>
               </div>
               <p className="post-username">
@@ -190,7 +244,7 @@ const Home = ({ currentUser }) => {
           ))}
         </div>
       )}
-
+  
       {selectedPost && (
         <Modal
           isOpen={!!selectedPost}
@@ -217,7 +271,7 @@ const Home = ({ currentUser }) => {
           <button onClick={handleCloseComments}>Close</button>
         </Modal>
       )}
-
+  
       <Modal
         isOpen={isNewPostModalOpen}
         onRequestClose={handleCloseNewPostModal}
@@ -247,6 +301,7 @@ const Home = ({ currentUser }) => {
       </Modal>
     </div>
   );
+
 };
 
 export default Home;
