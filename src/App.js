@@ -8,6 +8,7 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import DiveSpots from './pages/DiveSpots';
 import DiveSpotDetails from './pages/DiveSpotDetails';
+import PersonalArea from './pages/PersonalArea';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -44,6 +45,7 @@ function App() {
         <Route path="/about" element={currentUser ? <About /> : <Navigate to="/signin" />} />
         <Route path="/list-of-dives" element={currentUser ? <DiveSpots /> : <Navigate to="/signin" />} />
         <Route path="/dive-spot/:id" element={currentUser ? <DiveSpotDetails /> : <Navigate to="/signin" />} />
+        <Route path="/personal-area" element={currentUser ? <PersonalArea currentUser={currentUser} /> : <Navigate to="/signin" />} />
         <Route path="/:username" element={currentUser ? <Home /> : <Navigate to="/signin" />} />
       </Routes>
     </div>
