@@ -2,11 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './DiveSpotDetails.css';
 
+
+
+
+const DiveSpotDetails = ({ currentUser }) => {
+  const { id } = useParams();
+  const [spot, setSpot] = useState(null);
+  const [newFish, setNewFish] = useState('');
+  const [showUsers, setShowUsers] = useState(false);
+  const [usersInterested, setUsersInterested] = useState([]);
+
+
+
+
 const fetchDiveSpotDetails = async (id) => {
   try {
+    console.log('sent id', { id });
     const response = await fetch(`http://localhost:3001/dive-spots/${id}`);
     if (!response.ok) throw new Error('Dive spot not found');
     const spot = await response.json();
+    console.log('Data received:', spot);
     return spot;
   } catch (error) {
     console.error('Error fetching dive spot details:', error);
@@ -14,10 +29,6 @@ const fetchDiveSpotDetails = async (id) => {
   }
 };
 
-const DiveSpotDetails = ({ currentUser }) => {
-  const { id } = useParams();
-  const [spot, setSpot] = useState(null);
-  const [newFish, setNewFish] = useState('');
 
   useEffect(() => {
     const getSpotDetails = async () => {
@@ -30,32 +41,12 @@ const DiveSpotDetails = ({ currentUser }) => {
   const handleLike = async () => {
     try {
       const response = await fetch(`http://localhost:3001/dive-spots/${id}/like`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: currentUser.username })
+        method: 'POST'
       });
       const updatedSpot = await response.json();
       setSpot(updatedSpot);
     } catch (error) {
       console.error('Error liking dive spot:', error);
-    }
-  };
-
-  const handleDislike = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/dislike`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ username: currentUser.username })
-      });
-      const updatedSpot = await response.json();
-      setSpot(updatedSpot);
-    } catch (error) {
-      console.error('Error disliking dive spot:', error);
     }
   };
 
@@ -95,13 +86,53 @@ const DiveSpotDetails = ({ currentUser }) => {
     }
   };
 
+  const handleRegisterInterest = async () => {
+    try {
+      console.log('name i sent',currentUser);
+      const response = await fetch(`http://localhost:3001/dive-spots/${id}/interest`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ userName: currentUser }) // Send current user name
+      });
+      if (response.ok) {
+        const updatedSpot = await response.json();
+        setSpot(updatedSpot);
+      } else {
+        console.error('Failed to register interest');
+      }
+    } catch (error) {
+      console.error('Error registering interest:', error);
+    }
+  };
+
+
+  const handleToggleUsers = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/dive-spots/${id}/list_interest`);
+      if (response.ok) {
+        const interestedUsers = await response.json();
+        console.log('Interested users:', interestedUsers);
+        setUsersInterested(interestedUsers);
+        setShowUsers(!showUsers); // Toggle visibility
+      } else {
+        console.error('Failed to fetch interested users');
+      }
+    } catch (error) {
+      console.error('Error fetching interested users:', error);
+    }
+  };
+
+  
+
   if (!spot) return <div>Dive spot not found</div>;
 
   return (
     <div className='spot-details-container'>
       <h1>{spot.name}</h1>
       <p className='spot-description'>{spot.description}</p>
-      
+
       <h2>Photos</h2>
       <div className='carousel'>
         {spot.images.length > 0 ? (
@@ -139,11 +170,30 @@ const DiveSpotDetails = ({ currentUser }) => {
           <button className='like-button' onClick={handleLike}>
             <i className='fas fa-thumbs-up'></i> Like {spot.likes}
           </button>
-          <button className='dislike-button' onClick={handleDislike}>
-            <i className='fas fa-thumbs-down'></i> Dislike {spot.dislikes}
-          </button>
         </div>
       </div>
+
+      <button className='register-diver-button' onClick={handleToggleUsers}>
+        {showUsers ? 'Hide Interested Users' : 'Show Interested Users'}
+      </button>
+      {showUsers && (
+  <div className='users-list'>
+    <h2>Users Interested</h2>
+    <ul>
+      {usersInterested.length > 0 ? (
+        usersInterested.map((user, index) => (
+          <li key={index}>{user}</li> // Assuming the user is just a string, adjust if needed
+        ))
+      ) : (
+        <p>No users interested yet</p>
+      )}
+    </ul>
+  </div>
+)}
+
+      <button className='register-diver-button' onClick={handleRegisterInterest}>
+        Register Interest
+      </button>
     </div>
   );
 };

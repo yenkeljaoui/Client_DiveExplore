@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
 // import './PersonalArea.css';
 
@@ -8,6 +9,14 @@ const PersonalArea = ({ currentUser }) => {
   const [likedPosts, setLikedPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [sharedPosts, setSharedPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [commentText, setCommentText] = useState('');
+  const [newPostTitle, setNewPostTitle] = useState('');
+  const [newPostDescription, setNewPostDescription] = useState('');
+  const [newPostMedia, setNewPostMedia] = useState(null);
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const [editPostId, setEditPostId] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,11 +70,61 @@ const PersonalArea = ({ currentUser }) => {
     }
   };
 
-  const handleEditPost = (postId) => {
-    navigate(`/edit-post/${postId}`);
+  const handleOpenEditPostModal = (post) => {
+    setNewPostTitle(post.title || '');
+    setNewPostDescription(post.description || '');
+    setNewPostMedia(null); // Optional: handle media separately if needed
+    setEditPostId(post._id);
+    setIsNewPostModalOpen(true);
   };
 
-  const handleUnfollowUser = async (username) => {
+  const handleCloseNewPostModal = () => {
+    setIsNewPostModalOpen(false);
+    setNewPostTitle('');
+    setNewPostDescription('');
+    setNewPostMedia(null);
+  };
+
+  const handleMediaChange = (e) => {
+    setNewPostMedia(e.target.files[0]);
+  };  
+
+  const handleEditPost = async () => {
+    if (!newPostTitle.trim()) return;
+  
+    const formData = new FormData();
+    formData.append('title', newPostTitle);
+    formData.append('description', newPostDescription);
+    formData.append('username', currentUser);
+    if (newPostMedia) {
+      formData.append('media', newPostMedia);
+    }
+  
+    try {
+      const response = await fetch(`http://localhost:3001/posts/${editPostId}`, {
+        method: 'PUT',
+        body: formData,
+      });
+  
+      if (response.ok) {
+        const updatedPost = await response.json();
+        const updatedPosts = userPosts.map(post =>
+          post._id === editPostId ? updatedPost : post
+        );
+        setUserPosts(updatedPosts);
+  
+        handleCloseNewPostModal();
+      } else {
+        const errorMessage = await response.text();
+        console.error('Error updating post:', errorMessage);
+        alert(errorMessage);
+      }
+    } catch (error) {
+      console.error('Error updating post:', error);
+    }
+  };
+  
+    const handleUnfollowUser = async (username) => {
     try {
       await fetch('http://localhost:3001/unfollow', {
         method: 'POST',
@@ -98,7 +157,8 @@ const PersonalArea = ({ currentUser }) => {
               )}
               <p className="post-description">{post.description}</p>
               <div className="post-actions">
-                <button onClick={() => handleEditPost(post._id)}>Edit</button>
+                {/* <button onClick={() => handleEditPost(post._id)}>Edit</button> */}
+                <button onClick={() => handleOpenEditPostModal(post)}>Edit</button>
                 <button onClick={() => handleDeletePost(post._id)}>Delete</button>
               </div>
               <p className="post-username">
@@ -192,6 +252,33 @@ const PersonalArea = ({ currentUser }) => {
           ))}
         </div>
       )}
+      <Modal
+        isOpen={isNewPostModalOpen}
+        onRequestClose={handleCloseNewPostModal}
+        contentLabel="Edit Post Modal"
+        className="new-post-modal"
+        overlayClassName="comments-overlay"
+      >
+        <h2>Edit Post</h2>
+        <input
+          type="text"
+          value={newPostTitle}
+          onChange={(e) => setNewPostTitle(e.target.value)}
+          placeholder="Post Title"
+        />
+        <textarea
+          value={newPostDescription}
+          onChange={(e) => setNewPostDescription(e.target.value)}
+          placeholder="Post Description (Optional)"
+        />
+        <input 
+          type="file"
+          accept="image/*"
+          onChange={handleMediaChange}
+        />
+        <button onClick={handleEditPost}>Submit</button>
+        <button onClick={handleCloseNewPostModal}>Close</button>
+      </Modal>
     </div>
   );
 };
