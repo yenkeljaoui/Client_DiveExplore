@@ -39,7 +39,7 @@
 
 .posts-container {
   display: flex;
-  flex-direction: column;
+  flex-direction:row;
   align-items: center;
   width: 80%;
   max-height: 400px;

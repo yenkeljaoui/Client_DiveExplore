@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
-// import './PersonalArea.css';
+ import './PersonalArea.css';
 
 const PersonalArea = ({ currentUser }) => {
   const [userPosts, setUserPosts] = useState([]);

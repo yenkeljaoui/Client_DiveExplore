@@ -1,0 +1,122 @@
+/* PersonalArea.css */
+
+.personal-area-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-image: url('/Users/yoelibarthel/Production/Client_DiveExplore/src/assets/images/background.personalarea.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 150vh;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #586cb1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+
+  h2{
+    text-align: center;
+    margin-bottom: 20px;
+    color: #fd00e4;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  
+  .posts-container {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .post {
+    background-color: rgba(33, 171, 221, 0.513);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(212, 9, 9, 0.2);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .post-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+  }
+  
+  .post-description {
+    margin-bottom: 10px;
+  }
+  
+  .post-actions button {
+    margin: 5px;
+  }
+  
+  .post img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  .post-username {
+    font-size: 1.3em;
+    color: #ff0000;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  li button {
+    margin-left: 10px;
+  }
+  
+  .new-post-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  .comments-overlay {
+    background-color: rgba(0, 0, 0, 0.75);
+  }
+  
+  .new-post-modal input,
+  .new-post-modal textarea {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .new-post-modal button {
+    margin-top: 10px;
+  }
+  

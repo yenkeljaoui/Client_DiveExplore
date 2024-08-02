@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import './PersonalAreaView.css';
+
 
 const PersonalAreaView = () => {
   const { username } = useParams();
@@ -79,11 +81,12 @@ const PersonalAreaView = () => {
       <h1>{username}'s Personal Area</h1>
 
       {/* Follow Button */}
-      {username !== currentUser && (
-        <button onClick={handleFollow}>
-          Follow {username}
-        </button>
-      )}
+{username !== currentUser && (
+  <button className="follow-button" onClick={handleFollow}>
+    Follow {username}
+  </button>
+)}
+
 
       <h2>My Posts</h2>
       {userPosts.length === 0 ? (

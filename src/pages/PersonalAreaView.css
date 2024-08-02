@@ -1,0 +1,21 @@
+/* PersonalAreaView.css */
+
+.follow-button {
+    background-color: #178f6d; /* Couleur de fond */
+    border: none; /* Supprimer la bordure par défaut */
+    color: rgb(255, 255, 255); /* Couleur du texte */
+    padding: 10px 20px; /* Espacement intérieur */
+    text-align: center; /* Alignement du texte */
+    text-decoration: none; /* Supprimer la décoration de texte */
+    display: inline-block; /* Affichage en ligne */
+    font-size: 16px; /* Taille de la police */
+    margin: 10px 2px; /* Marge */
+    cursor: pointer; /* Curseur pointeur */
+    border-radius: 5px; /* Coins arrondis */
+    transition: background-color 0.3s ease; /* Transition pour le changement de couleur */
+  }
+  
+  .follow-button:hover {
+    background-color: #16910b; /* Couleur de fond au survol */
+  }
+  
