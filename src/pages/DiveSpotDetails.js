@@ -2,62 +2,71 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './DiveSpotDetails.css';
 
-
-
-
 const DiveSpotDetails = ({ currentUser }) => {
   const { id } = useParams();
   const [spot, setSpot] = useState(null);
   const [newFish, setNewFish] = useState('');
   const [showUsers, setShowUsers] = useState(false);
   const [usersInterested, setUsersInterested] = useState([]);
-
-
-
-
-const fetchDiveSpotDetails = async (id) => {
-  try {
-    console.log('sent id', { id });
-    const response = await fetch(`http://localhost:3001/dive-spots/${id}`);
-    if (!response.ok) throw new Error('Dive spot not found');
-    const spot = await response.json();
-    console.log('Data received:', spot);
-    return spot;
-  } catch (error) {
-    console.error('Error fetching dive spot details:', error);
-    return null;
-  }
-};
-
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [hasLiked, setHasLiked] = useState(false);
 
   useEffect(() => {
     const getSpotDetails = async () => {
       const spotDetails = await fetchDiveSpotDetails(id);
       setSpot(spotDetails);
+      setHasLiked(spotDetails?.likedBy?.includes(currentUser) || false);
     };
     getSpotDetails();
-  }, [id]);
+  }, [id, currentUser]);
+
+  const fetchDiveSpotDetails = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3001/dive-spots/${id}`);
+      if (!response.ok) throw new Error('Dive spot not found');
+      const spot = await response.json();
+      return spot;
+    } catch (error) {
+      console.error('Error fetching dive spot details:', error);
+      return null;
+    }
+  };
 
   const handleLike = async () => {
+    if (hasLiked) {
+      console.error('User has already liked this spot');
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:3001/dive-spots/${id}/like`, {
-        method: 'POST'
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userName: currentUser }),
       });
       const updatedSpot = await response.json();
       setSpot(updatedSpot);
+      setHasLiked(true);
     } catch (error) {
       console.error('Error liking dive spot:', error);
     }
   };
 
   const handleAddFish = async () => {
+    if (newFish.trim() === '') {
+      console.error('Fish name cannot be empty');
+      return;
+    }
+
     try {
       const response = await fetch(`http://localhost:3001/dive-spots/${id}/fish`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ fishName: newFish })
+        body: JSON.stringify({ fishName: newFish }),
       });
       const updatedFish = await response.json();
       setSpot((prevSpot) => ({ ...prevSpot, fish: updatedFish }));
@@ -67,34 +76,48 @@ const fetchDiveSpotDetails = async (id) => {
     }
   };
 
-  const handleAddPhoto = async (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
+  const handlePhotoUpload = async () => {
+    if (!selectedPhoto) return;
 
     const formData = new FormData();
-    formData.append('photo', file);
+    formData.append('photo', selectedPhoto);
 
     try {
       const response = await fetch(`http://localhost:3001/dive-spots/${id}/photo`, {
         method: 'POST',
-        body: formData
+        body: formData,
       });
-      const imageUrl = await response.json();
-      setSpot((prevSpot) => ({ ...prevSpot, images: [...prevSpot.images, imageUrl] }));
+      const updatedSpot = await response.json();
+      setSpot(updatedSpot);
+      setSelectedPhoto(null);
     } catch (error) {
-      console.error('Error adding photo:', error);
+      console.error('Error uploading photo:', error);
+    }
+  };
+
+  const handleToggleUsers = async () => {
+    try {
+      const response = await fetch(`http://localhost:3001/dive-spots/${id}/list_interest`);
+      if (response.ok) {
+        const interestedUsers = await response.json();
+        setUsersInterested(interestedUsers);
+        setShowUsers(!showUsers);
+      } else {
+        console.error('Failed to fetch interested users');
+      }
+    } catch (error) {
+      console.error('Error fetching interested users:', error);
     }
   };
 
   const handleRegisterInterest = async () => {
     try {
-      console.log('name i sent',currentUser);
       const response = await fetch(`http://localhost:3001/dive-spots/${id}/interest`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userName: currentUser }) // Send current user name
+        body: JSON.stringify({ userName: currentUser }),
       });
       if (response.ok) {
         const updatedSpot = await response.json();
@@ -107,25 +130,6 @@ const fetchDiveSpotDetails = async (id) => {
     }
   };
 
-
-  const handleToggleUsers = async () => {
-    try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/list_interest`);
-      if (response.ok) {
-        const interestedUsers = await response.json();
-        console.log('Interested users:', interestedUsers);
-        setUsersInterested(interestedUsers);
-        setShowUsers(!showUsers); // Toggle visibility
-      } else {
-        console.error('Failed to fetch interested users');
-      }
-    } catch (error) {
-      console.error('Error fetching interested users:', error);
-    }
-  };
-
-  
-
   if (!spot) return <div>Dive spot not found</div>;
 
   return (
@@ -135,10 +139,10 @@ const fetchDiveSpotDetails = async (id) => {
 
       <h2>Photos</h2>
       <div className='carousel'>
-        {spot.images.length > 0 ? (
+        {spot.images && spot.images.length > 0 ? (
           spot.images.map((image, index) => (
             <div key={index} className='carousel-image'>
-              <img src={image} alt={`Dive spot ${index + 1}`} />
+              <img src={image.url} alt={`Dive spot ${index + 1}`} />
             </div>
           ))
         ) : (
@@ -146,14 +150,19 @@ const fetchDiveSpotDetails = async (id) => {
         )}
       </div>
       <div className='upload-container'>
-        <input type='file' onChange={handleAddPhoto} />
+        <input type='file' onChange={(e) => setSelectedPhoto(e.target.files[0])} />
+        <button onClick={handlePhotoUpload}>Upload Photo</button>
       </div>
 
       <h2>Fish You Can Find Here</h2>
       <ul>
-        {spot.fish.map((fish, index) => (
-          <li key={index}>{fish}</li>
-        ))}
+        {spot.fish && spot.fish.length > 0 ? (
+          spot.fish.map((fish, index) => (
+            <li key={index}>{fish}</li>
+          ))
+        ) : (
+          <p>No fish available</p>
+        )}
       </ul>
       <div className='fish-container'>
         <input
@@ -167,29 +176,32 @@ const fetchDiveSpotDetails = async (id) => {
 
       <div className='like-dislike-container'>
         <div className='like-dislike-buttons'>
-          <button className='like-button' onClick={handleLike}>
+          <button className='like-button' onClick={handleLike} disabled={hasLiked}>
             <i className='fas fa-thumbs-up'></i> Like {spot.likes}
           </button>
         </div>
       </div>
 
-      <button className='register-diver-button' onClick={handleToggleUsers}>
+      <button
+        className={`register-diver-button ${showUsers ? 'active' : ''}`}
+        onClick={handleToggleUsers}
+      >
         {showUsers ? 'Hide Interested Users' : 'Show Interested Users'}
       </button>
       {showUsers && (
-  <div className='users-list'>
-    <h2>Users Interested</h2>
-    <ul>
-      {usersInterested.length > 0 ? (
-        usersInterested.map((user, index) => (
-          <li key={index}>{user}</li> // Assuming the user is just a string, adjust if needed
-        ))
-      ) : (
-        <p>No users interested yet</p>
+        <div className='users-list'>
+          <h2>Users Interested</h2>
+          <ul>
+            {usersInterested.length > 0 ? (
+              usersInterested.map((user, index) => (
+                <li key={index}>{user}</li>
+              ))
+            ) : (
+              <p>No users interested yet</p>
+            )}
+          </ul>
+        </div>
       )}
-    </ul>
-  </div>
-)}
 
       <button className='register-diver-button' onClick={handleRegisterInterest}>
         Register Interest

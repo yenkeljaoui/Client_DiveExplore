@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from 'react-modal';
 import { useNavigate } from 'react-router-dom';
- import './PersonalArea.css';
+import './PersonalArea.css';
 
 const PersonalArea = ({ currentUser }) => {
   const [userPosts, setUserPosts] = useState([]);
@@ -9,7 +9,6 @@ const PersonalArea = ({ currentUser }) => {
   const [likedPosts, setLikedPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [sharedPosts, setSharedPosts] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState(null);
   const [commentText, setCommentText] = useState('');
   const [newPostTitle, setNewPostTitle] = useState('');
@@ -55,7 +54,6 @@ const PersonalArea = ({ currentUser }) => {
       console.error('Error fetching user data:', err);
     }
   };
-
 
   const handleDeletePost = async (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
@@ -124,7 +122,7 @@ const PersonalArea = ({ currentUser }) => {
     }
   };
   
-    const handleUnfollowUser = async (username) => {
+  const handleUnfollowUser = async (username) => {
     try {
       await fetch('http://localhost:3001/unfollow', {
         method: 'POST',
@@ -149,15 +147,18 @@ const PersonalArea = ({ currentUser }) => {
           {userPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && ( // Utiliser le champ correct pour l'URL de l'image
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} // Utiliser mediaUrl pour afficher l'image
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url'; // Image de secours si l'URL de l'image ne fonctionne pas
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
               <div className="post-actions">
-                {/* <button onClick={() => handleEditPost(post._id)}>Edit</button> */}
                 <button onClick={() => handleOpenEditPostModal(post)}>Edit</button>
                 <button onClick={() => handleDeletePost(post._id)}>Delete</button>
               </div>
@@ -189,10 +190,14 @@ const PersonalArea = ({ currentUser }) => {
           {likedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -213,10 +218,14 @@ const PersonalArea = ({ currentUser }) => {
           {savedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -237,10 +246,14 @@ const PersonalArea = ({ currentUser }) => {
           {sharedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -252,6 +265,7 @@ const PersonalArea = ({ currentUser }) => {
           ))}
         </div>
       )}
+
       <Modal
         isOpen={isNewPostModalOpen}
         onRequestClose={handleCloseNewPostModal}

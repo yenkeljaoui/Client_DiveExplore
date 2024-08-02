@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import './PersonalAreaView.css';
 
-
 const PersonalAreaView = () => {
   const { username } = useParams();
   const [userPosts, setUserPosts] = useState([]);
@@ -10,7 +9,6 @@ const PersonalAreaView = () => {
   const [likedPosts, setLikedPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [sharedPosts, setSharedPosts] = useState([]);
-  const [posts, setPosts] = useState([]);
   const [currentUser, setCurrentUser] = useState(''); // Track current user
 
   useEffect(() => {
@@ -81,12 +79,11 @@ const PersonalAreaView = () => {
       <h1>{username}'s Personal Area</h1>
 
       {/* Follow Button */}
-{username !== currentUser && (
-  <button className="follow-button" onClick={handleFollow}>
-    Follow {username}
-  </button>
-)}
-
+      {username !== currentUser && (
+        <button className="follow-button" onClick={handleFollow}>
+          Follow {username}
+        </button>
+      )}
 
       <h2>My Posts</h2>
       {userPosts.length === 0 ? (
@@ -96,10 +93,14 @@ const PersonalAreaView = () => {
           {userPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -127,10 +128,14 @@ const PersonalAreaView = () => {
           {likedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -151,10 +156,14 @@ const PersonalAreaView = () => {
           {savedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>
@@ -175,10 +184,14 @@ const PersonalAreaView = () => {
           {sharedPosts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
+                  onError={(e) => {
+                    e.target.src = 'fallback_image_url';
+                    console.error('Error loading image:', post.mediaUrl);
+                  }}
                 />
               )}
               <p className="post-description">{post.description}</p>

@@ -3,7 +3,10 @@
 .navbar {
   background-color: #07667c;
   padding: 10px 20px;
-  overflow-x: auto; /* Enable horizontal scrolling */
+  display: flex;
+  justify-content: center; /* Center the navbar horizontally */
+  align-items: center; /* Center items vertically */
+  overflow-x: auto; /* Enable horizontal scrolling if necessary */
   -webkit-overflow-scrolling: touch; /* Enable smooth scrolling on iOS */
 }
 
@@ -12,7 +15,7 @@
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
+  align-items: center; /* Center items vertically */
   white-space: nowrap; /* Prevent wrapping */
 }
 
@@ -22,11 +25,12 @@
 
 .navbar-link {
   color: rgb(255, 255, 255);
-  text-decoration: none;
-  font-size: 1em; /* Reduced font size */
+  text-decoration:none;
+  font-size: 1em;
   padding: 5px 10px;
   border-radius: 5px;
   transition: background-color 0.5s;
+  white-space: nowrap; /* Ensure the text stays on one line */
 }
 
 .navbar-link:hover,

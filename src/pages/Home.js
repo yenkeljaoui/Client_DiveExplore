@@ -16,6 +16,7 @@ const Home = ({ currentUser }) => {
   const [newPostDescription, setNewPostDescription] = useState('');
   const [newPostMedia, setNewPostMedia] = useState(null);
   const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchPosts();
@@ -23,18 +24,22 @@ const Home = ({ currentUser }) => {
 
   const fetchPosts = async () => {
     try {
+      setError(''); // Clear any previous errors
       const response = await fetch('http://localhost:3001/posts');
-      if (!response.ok) throw new Error('Error fetching posts');
+      if (!response.ok) throw new Error(`Error fetching posts: ${response.statusText}`);
       const data = await response.json();
+      if (!Array.isArray(data)) throw new Error('Invalid response format');
       const sortedPosts = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setPosts(sortedPosts);
     } catch (error) {
       console.error('Error fetching posts:', error);
+      setError('Failed to load posts. Please try again later.');
     }
   };
 
   const handleLike = async (postId) => {
     try {
+      setError('');
       const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
         method: 'POST',
         headers: {
@@ -43,17 +48,13 @@ const Home = ({ currentUser }) => {
         body: JSON.stringify({ username: currentUser })
       });
 
-      if (response.ok) {
-        const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      } else {
-        const errorMessage = await response.text();
-        console.error('Error liking post:', errorMessage);
-        alert(errorMessage);
-      }
+      if (!response.ok) throw new Error(`Error liking post: ${response.statusText}`);
+      const updatedPost = await response.json();
+      const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
     } catch (error) {
       console.error('Error liking post:', error);
+      setError('Failed to like post. Please try again later.');
     }
   };
 
@@ -70,6 +71,7 @@ const Home = ({ currentUser }) => {
     if (!commentText.trim()) return;
 
     try {
+      setError('');
       const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
         method: 'POST',
         headers: {
@@ -78,19 +80,15 @@ const Home = ({ currentUser }) => {
         body: JSON.stringify({ username: currentUser, comment: commentText })
       });
 
-      if (response.ok) {
-        const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post._id === selectedPost._id ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-        setSelectedPost(updatedPost);
-        setCommentText('');
-      } else {
-        const errorMessage = await response.text();
-        console.error('Error adding comment:', errorMessage);
-        alert(errorMessage);
-      }
+      if (!response.ok) throw new Error(`Error adding comment: ${response.statusText}`);
+      const updatedPost = await response.json();
+      const sortedPosts = posts.map(post => post._id === selectedPost._id ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
+      setSelectedPost(updatedPost);
+      setCommentText('');
     } catch (error) {
       console.error('Error adding comment:', error);
+      setError('Failed to add comment. Please try again later.');
     }
   };
 
@@ -117,23 +115,20 @@ const Home = ({ currentUser }) => {
     }
 
     try {
+      setError('');
       const response = await fetch('http://localhost:3001/posts', {
         method: 'POST',
         body: formData
       });
 
-      if (response.ok) {
-        const newPost = await response.json();
-        const sortedPosts = [newPost, ...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-        handleCloseNewPostModal();
-      } else {
-        const errorMessage = await response.text();
-        console.error('Error creating post:', errorMessage);
-        alert(errorMessage);
-      }
+      if (!response.ok) throw new Error(`Error creating post: ${response.statusText}`);
+      const newPost = await response.json();
+      const sortedPosts = [newPost, ...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
+      handleCloseNewPostModal();
     } catch (error) {
       console.error('Error creating post:', error);
+      setError('Failed to create post. Please try again later.');
     }
   };
 
@@ -143,6 +138,7 @@ const Home = ({ currentUser }) => {
 
   const handleShare = async (postId) => {
     try {
+      setError('');
       const response = await fetch(`http://localhost:3001/posts/${postId}/share`, {
         method: 'POST',
         headers: {
@@ -150,23 +146,20 @@ const Home = ({ currentUser }) => {
         },
         body: JSON.stringify({ username: currentUser })
       });
-  
-      if (response.ok) {
-        const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      } else {
-        const errorMessage = await response.text();
-        console.error('Error sharing post:', errorMessage);
-        alert(errorMessage);
-      }
+
+      if (!response.ok) throw new Error(`Error sharing post: ${response.statusText}`);
+      const updatedPost = await response.json();
+      const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
     } catch (error) {
       console.error('Error sharing post:', error);
+      setError('Failed to share post. Please try again later.');
     }
   };
-  
+
   const handleSave = async (postId) => {
     try {
+      setError('');
       const response = await fetch(`http://localhost:3001/posts/${postId}/save`, {
         method: 'POST',
         headers: {
@@ -174,18 +167,14 @@ const Home = ({ currentUser }) => {
         },
         body: JSON.stringify({ username: currentUser })
       });
-  
-      if (response.ok) {
-        const updatedPost = await response.json();
-        const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      } else {
-        const errorMessage = await response.text();
-        console.error('Error saving post:', errorMessage);
-        alert(errorMessage);
-      }
+
+      if (!response.ok) throw new Error(`Error saving post: ${response.statusText}`);
+      const updatedPost = await response.json();
+      const sortedPosts = posts.map(post => post._id === postId ? updatedPost : post).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      setPosts(sortedPosts);
     } catch (error) {
       console.error('Error saving post:', error);
+      setError('Failed to save post. Please try again later.');
     }
   };
 
@@ -194,21 +183,21 @@ const Home = ({ currentUser }) => {
       <h1>Welcome to DiveExplore</h1>
       <p>Social Network</p>
       <button className="new-post-button" onClick={handleOpenNewPostModal}>New Post</button>
-  
-      {posts.length === 0 ? (
+      {error && <p className="error-message">{error}</p>}
+      {posts.length === 0 && !error ? (
         <p>No posts available</p>
       ) : (
         <div className="posts-container">
           {posts.map(post => (
             <div key={post._id} className="post">
               <h3 className="post-title">{post.title}</h3>
-              {post.media && (
+              {post.mediaUrl && (
                 <img 
-                  src={`http://localhost:3001${post.media}`} 
+                  src={post.mediaUrl} 
                   alt={post.title} 
                   onError={(e) => {
                     e.target.src = background2;
-                    console.error('Error loading image:', post.media);
+                    console.error('Error loading image:', post.mediaUrl);
                   }}
                 />
               )}
@@ -244,7 +233,7 @@ const Home = ({ currentUser }) => {
           ))}
         </div>
       )}
-  
+
       {selectedPost && (
         <Modal
           isOpen={!!selectedPost}
@@ -271,7 +260,7 @@ const Home = ({ currentUser }) => {
           <button onClick={handleCloseComments}>Close</button>
         </Modal>
       )}
-  
+
       <Modal
         isOpen={isNewPostModalOpen}
         onRequestClose={handleCloseNewPostModal}
@@ -301,7 +290,6 @@ const Home = ({ currentUser }) => {
       </Modal>
     </div>
   );
-
 };
 
 export default Home;

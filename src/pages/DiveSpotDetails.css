@@ -1,19 +1,20 @@
 /* src/pages/DiveSpotDetails.css */
 .spot-details-container {
-  height: 215vh;
+  height: auto;
   background-image: url('../assets/images/background_DiveSpotsDetails.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
   flex-direction: column;
+  align-items: center;
   color: rgb(254, 250, 250);
   text-shadow: 1px 1px 2px black;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0);
-  padding: 20px; /* Add padding to the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
 }
 
 .section {
-  margin-bottom: 40px; /* Add spacing between sections */
+  margin-bottom: 40px;
 }
 
 .carousel {
@@ -23,6 +24,8 @@
   overflow-x: auto;
   scroll-behavior: smooth;
   min-height: 200px;
+  margin-bottom: 40px;
+  width: 80%;
 }
 
 .carousel p {
@@ -32,20 +35,20 @@
 
 .carousel-image {
   flex: 0 0 auto;
-  width: 250px; /* Width for smaller images */
-  height: auto; /* Maintain aspect ratio */
-  margin: 0 20px; /* Add some spacing between images */
-  transition: transform 0.3s ease; /* Add transition for smooth scaling */
+  width: 250px;
+  height: auto;
+  margin: 0 20px;
+  transition: transform 0.3s ease;
 }
 
 .carousel-image:hover {
-  transform: scale(1.5); /* Scale the image on hover */
+  transform: scale(1.5);
 }
 
 .carousel-image img {
   width: 100%;
   height: auto;
-  object-fit: contain; /* Ensure images cover the fixed size without distortion */
+  object-fit: contain;
 }
 
 .spot-image {
@@ -57,8 +60,11 @@
 
 .upload-container,
 .fish-container,
-.like-dislike-container {
+.like-dislike-container,
+.users-list-container {
   text-align: center;
+  margin-bottom: 40px;
+  width: 80%;
 }
 
 .upload-container input[type="file"],
@@ -69,7 +75,12 @@
   border-radius: 5px;
   border: none;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  font-size: 1.1em; /* Increased font size */
+  font-size: 1.1em;
+}
+
+.fish-container input[type="text"] {
+  width: 60%; /* Reduced width for fish input */
+  max-width: 300px; /* Maximum width limit */
 }
 
 .upload-container button,
@@ -80,9 +91,10 @@
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 1.1em; /* Increased font size */
+  font-size: 1.1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  text-align: center; /* Center text inside the button */
 }
 
 .upload-container button:hover,
@@ -94,6 +106,7 @@
   display: flex;
   justify-content: center;
   gap: 20px;
+  text-align: center; /* Center text inside the buttons */
 }
 
 .like-button,
@@ -106,6 +119,7 @@
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 200px;
 }
 
 .like-button {
@@ -131,39 +145,44 @@
 
 h1 {
   text-align: center;
-  color: #0a88d6; /* Violet */
-  font-size: 2em; /* Increased font size */
+  color: #0a88d6;
+  font-size: 2em;
 }
 
 h2 {
   text-align: center;
-  color: #09a094; /* Violet */
-  font-size: 1.5em; /* Increased font size */
+  color: #09a094;
+  font-size: 1.5em;
   margin-top: 20px;
 }
 
 ul {
   list-style-type: none;
   padding: 0;
-  max-height: 200px; /* Maximum height for the fish list */
-  overflow-y: auto; /* Enable vertical scrolling */
+  max-height: 200px;
+  overflow-y: auto;
+  text-align: center;
+  width: 80%;
+  margin: 0 auto;
 }
 
 ul li {
-  background: rgba(18, 127, 157, 0.538); /* Updated color */
-  margin: 5px 0;
+  background: rgba(18, 127, 157, 0.538);
+  margin: 5px auto;
   padding: 10px;
   border-radius: 5px;
-  font-size: 1.1em; /* Increased font size */
+  font-size: 1.1em;
+  width: 100%;
+  max-width: 600px;
+  text-align: center; /* Center text inside the list items */
 }
 
 .spot-description {
-  font-size: 1.5em; /* Increased font size */
-  text-align: center; /* Center the text */
-  margin-bottom: 20px; /* Add some spacing below the text */
+  font-size: 1.5em;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Ensure the navbar doesn't have a scrollbar */
 .navbar-list {
   overflow: hidden;
 }
@@ -175,7 +194,7 @@ ul li {
   color: white;
   border: none;
   border-radius: 5px;
-  font-size: 1.1em; /* Increased font size */
+  font-size: 1.1em;
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: block;
@@ -185,13 +204,11 @@ ul li {
 .find-person-button {
   background-color: #1708c286;
 }
+
 .find-person-button:hover {
   background-color: #3a0ce0;
 }
 
-/* Styling for the button to register as an interested diver
-for two buttoun
-*/
 .register-diver-button {
   padding: 10px 15px;
   border: none;
@@ -199,10 +216,18 @@ for two buttoun
   cursor: pointer;
   font-size: 1em;
   margin-top: 10px;
-  background-color: #0a88d6;
+  background-color: #009cfe;
   color: white;
+  display: block;
+  margin: 10px auto;
+  width: fit-content;
+  text-align: center;
 }
 
 .register-diver-button:hover {
-  background-color: #0a88d6;
+  background-color: #009cfe;
+}
+
+.register-diver-button.active {
+  background-color: #e6007e;
 }
