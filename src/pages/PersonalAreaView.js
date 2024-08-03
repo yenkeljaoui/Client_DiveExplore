@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import './PersonalAreaView.css';
 
 const PersonalAreaView = () => {
-  const { username } = useParams();
+  const { username } = useParams(); // Récupère le username depuis l'URL
   const [userPosts, setUserPosts] = useState([]);
   const [following, setFollowing] = useState([]);
   const [likedPosts, setLikedPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [sharedPosts, setSharedPosts] = useState([]);
-  const [currentUser, setCurrentUser] = useState(''); // Track current user
+  const [currentUser, setCurrentUser] = useState(''); // Utilisateur actuel
+
+  // Récupère les paramètres de l'URL
+  const location = useLocation();
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const currentUserFromParams = params.get('currentUser');
+    if (currentUserFromParams) {
+      setCurrentUser(currentUserFromParams);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     if (username) {
@@ -39,15 +49,9 @@ const PersonalAreaView = () => {
       setUserPosts(userPostsData);
   
       // Fetch following
-      const followingResponse = await fetch(`http://localhost:3001/following/${username}`);
+      const followingResponse = await fetch(`http://localhost:3001/follow/${username}`);
       const followingData = await followingResponse.json();
       setFollowing(followingData);
-
-      // Fetch current user data
-      const currentUserResponse = await fetch('http://localhost:3001/currentUser');
-      const currentUserData = await currentUserResponse.json();
-      setCurrentUser(currentUserData.username);
-  
     } catch (err) {
       console.error('Error fetching user data:', err);
     }
@@ -55,16 +59,16 @@ const PersonalAreaView = () => {
 
   const handleFollow = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/follow/${username}`, {
+      const response = await fetch('http://localhost:3001/follow', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ currentUser }),
+        body: JSON.stringify({ currentUser, targetUser: username }),
       });
       const result = await response.json();
-      if (result.success) {
-        alert(`Successfully followed ${username}`);
+      if (result.message) {
+        alert(result.message);
         fetchUserData(); // Refresh data to show updated following list
       } else {
         alert('Error following user');

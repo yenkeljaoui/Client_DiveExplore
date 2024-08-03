@@ -12,7 +12,7 @@
   
   .spots-title {
     text-align: center;
-    color: #de65ff; /* Couleur violette pour le titre */
+    color: #426fa2; /* Couleur violette pour le titre */
     font-size: 2em;
     margin-top: 20px; /* Espace en haut pour le titre */
   }
@@ -34,12 +34,12 @@
   }
   
   .spot-item:hover {
-    background-color: rgba(231, 243, 255, 0.8); /* Fond bleu plus clair au survol avec transparence */
+    background-color: rgba(1, 120, 238, 0.8); /* Fond bleu plus clair au survol avec transparence */
   }
   
   .spot-link {
     text-decoration: none;
-    color: #cb284e; /* Couleur bleue pour les liens */
+    color: #ff0099; /* Couleur bleue pour les liens */
     font-size: 1.2em;
     font-weight: bold;
   }

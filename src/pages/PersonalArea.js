@@ -9,12 +9,10 @@ const PersonalArea = ({ currentUser }) => {
   const [likedPosts, setLikedPosts] = useState([]);
   const [savedPosts, setSavedPosts] = useState([]);
   const [sharedPosts, setSharedPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [commentText, setCommentText] = useState('');
+  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
   const [newPostTitle, setNewPostTitle] = useState('');
   const [newPostDescription, setNewPostDescription] = useState('');
   const [newPostMedia, setNewPostMedia] = useState(null);
-  const [isNewPostModalOpen, setIsNewPostModalOpen] = useState(false);
   const [editPostId, setEditPostId] = useState(null);
   const navigate = useNavigate();
 
@@ -46,7 +44,7 @@ const PersonalArea = ({ currentUser }) => {
       setUserPosts(userPostsData);
   
       // Fetch following
-      const followingResponse = await fetch(`http://localhost:3001/api/following/${currentUser}`);
+      const followingResponse = await fetch(`http://localhost:3001/follow/${currentUser}`);
       const followingData = await followingResponse.json();
       setFollowing(followingData);
   
@@ -127,7 +125,7 @@ const PersonalArea = ({ currentUser }) => {
       await fetch('http://localhost:3001/unfollow', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ currentUser, username }),
+        body: JSON.stringify({ currentUser, targetUser: username }),
       });
       setFollowing(following.filter((user) => user !== username));
     } catch (err) {
@@ -171,16 +169,21 @@ const PersonalArea = ({ currentUser }) => {
         </div>
       )}
 
-      <h2>Following</h2>
-      <ul>
-        {following.map((user) => (
-          <li key={user}>
-            {user}
-            <button onClick={() => navigate(`/user/${user}`)}>View Profile</button>
-            <button onClick={() => handleUnfollowUser(user)}>Unfollow</button>
-          </li>
-        ))}
-      </ul>
+<h2>Following</h2>
+<ul className="following-list">
+  {following.length === 0 ? (
+    <p>No following users available</p>
+  ) : (
+    following.map((user) => (
+      <li key={user} className="following-item">
+        {user}
+        <button onClick={() => navigate(`/user/${user}`)}>View Profile</button>
+        <button onClick={() => handleUnfollowUser(user)}>Unfollow</button>
+      </li>
+    ))
+  )}
+</ul>
+
 
       <h2>Liked Posts</h2>
       {likedPosts.length === 0 ? (
@@ -192,8 +195,8 @@ const PersonalArea = ({ currentUser }) => {
               <h3 className="post-title">{post.title}</h3>
               {post.mediaUrl && (
                 <img 
-                  src={post.mediaUrl} 
-                  alt={post.title} 
+                  src={post.mediaUrl}
+                  alt={post.title}
                   onError={(e) => {
                     e.target.src = 'fallback_image_url';
                     console.error('Error loading image:', post.mediaUrl);
@@ -220,8 +223,8 @@ const PersonalArea = ({ currentUser }) => {
               <h3 className="post-title">{post.title}</h3>
               {post.mediaUrl && (
                 <img 
-                  src={post.mediaUrl} 
-                  alt={post.title} 
+                  src={post.mediaUrl}
+                  alt={post.title}
                   onError={(e) => {
                     e.target.src = 'fallback_image_url';
                     console.error('Error loading image:', post.mediaUrl);
@@ -248,8 +251,8 @@ const PersonalArea = ({ currentUser }) => {
               <h3 className="post-title">{post.title}</h3>
               {post.mediaUrl && (
                 <img 
-                  src={post.mediaUrl} 
-                  alt={post.title} 
+                  src={post.mediaUrl}
+                  alt={post.title}
                   onError={(e) => {
                     e.target.src = 'fallback_image_url';
                     console.error('Error loading image:', post.mediaUrl);

@@ -1,4 +1,8 @@
-/* PersonalArea.css */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 .personal-area-container {
     display: flex;
@@ -9,31 +13,31 @@
     background-size: cover;
     background-position: center;
     min-height: 150vh;
-  }
+}
   
-  h1 {
+h1 {
     text-align: center;
     margin-bottom: 20px;
     color: #586cb1;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
+}
 
-  h2{
+h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #fd00e4;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  }
+}
   
-  .posts-container {
+.posts-container {
     width: 80%;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-  }
+}
   
-  .post {
+.post {
     background-color: rgba(33, 171, 221, 0.513);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(212, 9, 9, 0.2);
@@ -41,57 +45,74 @@
     max-width: 400px;
     width: 100%;
     text-align: center;
-  }
+}
   
-  .post-title {
+.post-title {
     font-size: 1.5em;
     margin-bottom: 10px;
-  }
+}
   
-  .post-description {
+.post-description {
     margin-bottom: 10px;
-  }
+}
   
-  .post-actions button {
+.post-actions button {
     margin: 5px;
-  }
+}
   
-  .post img {
+.post img {
     max-width: 100%;
     height: auto;
     border-radius: 5px;
     margin-bottom: 10px;
-  }
+}
   
-  .post-username {
+.post-username {
     font-size: 1.3em;
     color: #ff0000;
-  }
-  
-  ul {
+}
+
+/* Styles spécifiques pour la liste "Following" */
+.following-list {
     list-style: none;
     padding: 0;
-    margin: 0;
-  }
-  
-  li {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+    margin: 0 auto;
+    width: 80%;
     max-width: 400px;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 5px;
-    padding: 10px;
+    overflow-x: hidden;
+}
+  
+.following-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    width: 100%;
+    background-color: rgba(33, 171, 221, 0.513);
+    border-radius: 10px;
+    padding: 20px;
     margin-bottom: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  li button {
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    color: white;
+    overflow: hidden;
+}
+
+.following-item button {
     margin-left: 10px;
-  }
-  
-  .new-post-modal {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.following-item button:hover {
+    background-color: #ff00d4;
+}
+
+/* Styles pour la modale de nouveau post */
+.new-post-modal {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -101,22 +122,32 @@
     max-width: 500px;
     width: 100%;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
+}
   
-  .comments-overlay {
+.comments-overlay {
     background-color: rgba(0, 0, 0, 0.75);
-  }
+}
   
-  .new-post-modal input,
-  .new-post-modal textarea {
+.new-post-modal input,
+.new-post-modal textarea {
     width: 100%;
     margin-bottom: 10px;
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
-  }
+}
   
-  .new-post-modal button {
+.new-post-modal button {
     margin-top: 10px;
-  }
-  
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #586cb1;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.new-post-modal button:hover {
+    background-color: #475a9c;
+}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
 import { Link } from 'react-router-dom';
+import Modal from 'react-modal';
 import './Home.css';
 import background from '../assets/images/background.jpg';
 import background2 from '../assets/images/background_2.jpg'; // Image de secours
@@ -227,7 +227,10 @@ const Home = ({ currentUser }) => {
               </div>
               <p className="post-username">
                 <span>Posted by: </span>
-                <Link to={`/user/${post.username}`}>{post.username}</Link>
+                {/* Link with currentUser as a parameter */}
+                <Link to={`/user/${post.username}?currentUser=${currentUser}`}>
+                  {post.username}
+                </Link>
               </p>
             </div>
           ))}
