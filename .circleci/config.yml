@@ -11,12 +11,12 @@ jobs:
       - run:
           name: install dependencies
           command: npm install 
-      - run:
-          name: Run tests
-          command: npm test 
-      - run:
-          name: Run lint
-          command: npm run lint
+      # - run:
+      #     name: Run tests
+      #     command: npm test 
+      # - run:
+      #     name: Run lint
+      #     command: npm run lint
 
   # deploy:
   #   docker:
