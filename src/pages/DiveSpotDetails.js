@@ -22,7 +22,8 @@ const DiveSpotDetails = ({ currentUser }) => {
 
   const fetchDiveSpotDetails = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}`);
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}`);
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}`);
       if (!response.ok) throw new Error('Dive spot not found');
       const spot = await response.json();
       return spot;
@@ -39,7 +40,9 @@ const DiveSpotDetails = ({ currentUser }) => {
     }
 
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/like`, {
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}/like`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}/like`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -59,9 +62,11 @@ const DiveSpotDetails = ({ currentUser }) => {
       console.error('Fish name cannot be empty');
       return;
     }
-
+    
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/fish`, {
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}/fish`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}/fish`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -81,9 +86,11 @@ const DiveSpotDetails = ({ currentUser }) => {
 
     const formData = new FormData();
     formData.append('photo', selectedPhoto);
-
+    
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/photo`, {
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}/photo`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}/photo`, {
+
         method: 'POST',
         body: formData,
       });
@@ -94,10 +101,11 @@ const DiveSpotDetails = ({ currentUser }) => {
       console.error('Error uploading photo:', error);
     }
   };
-
+  
   const handleToggleUsers = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/list_interest`);
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}/list_interest`);
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}/list_interest`);
       if (response.ok) {
         const interestedUsers = await response.json();
         setUsersInterested(interestedUsers);
@@ -109,10 +117,12 @@ const DiveSpotDetails = ({ currentUser }) => {
       console.error('Error fetching interested users:', error);
     }
   };
-
+  
   const handleRegisterInterest = async () => {
     try {
-      const response = await fetch(`http://localhost:3001/dive-spots/${id}/interest`, {
+      // const response = await fetch(`http://localhost:3001/dive-spots/${id}/interest`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/dive-spots/${id}/interest`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

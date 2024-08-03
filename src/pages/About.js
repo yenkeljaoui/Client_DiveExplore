@@ -5,10 +5,9 @@ const About = () => {
   const [projectDescription, setProjectDescription] = useState('');
   const [members, setMembers] = useState([]);
   const [error, setError] = useState(null);
-
   useEffect(() => {
     // fetch('http://localhost:3001/about')               //get from server that run locally
-    fetch('https://serverdiveexplore-1.onrender.com/about')     //get from server that run from cloud
+    fetch('https://serverdiveexplore.onrender.com/about')     //get from server that run from cloud
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');

@@ -14,10 +14,12 @@ import PersonalAreaView from './pages/PersonalAreaView';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-
+  
   const handleSignIn = async (username, password) => {
     try {
-      const response = await fetch('http://localhost:3001/signin', {
+      // const response = await fetch('http://localhost:3001/signin', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/signin', {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

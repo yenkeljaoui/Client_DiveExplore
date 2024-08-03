@@ -25,7 +25,8 @@ const Home = ({ currentUser }) => {
   const fetchPosts = async () => {
     try {
       setError(''); // Clear any previous errors
-      const response = await fetch('http://localhost:3001/posts');
+      // const response = await fetch('http://localhost:3001/posts');
+      const response = await fetch('https://serverdiveexplore.onrender.com/posts');
       if (!response.ok) throw new Error(`Error fetching posts: ${response.statusText}`);
       const data = await response.json();
       if (!Array.isArray(data)) throw new Error('Invalid response format');
@@ -40,7 +41,9 @@ const Home = ({ currentUser }) => {
   const handleLike = async (postId) => {
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+      // const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${postId}/like`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -72,7 +75,9 @@ const Home = ({ currentUser }) => {
 
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
+      // const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${selectedPost._id}/comment`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -113,10 +118,12 @@ const Home = ({ currentUser }) => {
     if (newPostMedia) {
       formData.append('media', newPostMedia);
     }
-
+    
     try {
       setError('');
-      const response = await fetch('http://localhost:3001/posts', {
+      // const response = await fetch('http://localhost:3001/posts', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/posts', {
+
         method: 'POST',
         body: formData
       });
@@ -135,11 +142,13 @@ const Home = ({ currentUser }) => {
   const handleMediaChange = (e) => {
     setNewPostMedia(e.target.files[0]);
   };
-
+  
   const handleShare = async (postId) => {
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${postId}/share`, {
+      // const response = await fetch(`http://localhost:3001/posts/${postId}/share`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${postId}/share`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -156,11 +165,13 @@ const Home = ({ currentUser }) => {
       setError('Failed to share post. Please try again later.');
     }
   };
-
+  
   const handleSave = async (postId) => {
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${postId}/save`, {
+      // const response = await fetch(`http://localhost:3001/posts/${postId}/save`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${postId}/save`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

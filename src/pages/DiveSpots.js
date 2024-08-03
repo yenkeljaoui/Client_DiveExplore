@@ -5,7 +5,8 @@ import './create_DiveSpots';
 
 const fetchDivingSpots = async () => {
   try {
-    const response = await fetch('http://localhost:3001/dive-spots/get_dive_spots');
+    // const response = await fetch('http://localhost:3001/dive-spots/get_dive_spots');
+    const response = await fetch('https://serverdiveexplore.onrender.com/dive-spots/get_dive_spots');
     const spots = await response.json();
     return spots;
   } catch (error) {

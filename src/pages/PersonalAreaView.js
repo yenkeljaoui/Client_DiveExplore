@@ -26,11 +26,12 @@ const PersonalAreaView = () => {
       fetchUserData();
     }
   }, [username]);
-
+  
   const fetchUserData = async () => {
     try {
       // Fetch all posts
-      const postsResponse = await fetch('http://localhost:3001/posts');
+      // const postsResponse = await fetch('http://localhost:3001/posts');
+      const postsResponse = await fetch('https://serverdiveexplore.onrender.com/posts');
       const postsData = await postsResponse.json();
       
       // Filter posts to get those liked, saved, and shared by the current user
@@ -42,24 +43,28 @@ const PersonalAreaView = () => {
 
       const sharedPostsData = postsData.filter(post => post.sharedBy.includes(username));
       setSharedPosts(sharedPostsData);
-  
+      
       // Fetch user posts
-      const userPostsResponse = await fetch(`http://localhost:3001/posts/${username}`);
+      // const userPostsResponse = await fetch(`http://localhost:3001/posts/${username}`);
+      const userPostsResponse = await fetch(`https://serverdiveexplore.onrender.com/posts/${username}`);
       const userPostsData = await userPostsResponse.json();
       setUserPosts(userPostsData);
   
       // Fetch following
-      const followingResponse = await fetch(`http://localhost:3001/follow/${username}`);
+      // const followingResponse = await fetch(`http://localhost:3001/follow/${username}`);
+      const followingResponse = await fetch(`https://serverdiveexplore.onrender.com/follow/${username}`);
       const followingData = await followingResponse.json();
       setFollowing(followingData);
     } catch (err) {
       console.error('Error fetching user data:', err);
     }
   };
-
+  
   const handleFollow = async () => {
     try {
-      const response = await fetch('http://localhost:3001/follow', {
+      // const response = await fetch('http://localhost:3001/follow', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/follow', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

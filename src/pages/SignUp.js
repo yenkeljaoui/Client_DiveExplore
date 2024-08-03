@@ -45,10 +45,11 @@ export default function SignUp(props) {
       email,
       password,
     };
-
+    
     try {
-      // const response = await fetch('https://serverdiveexplore-1.onrender.com/signup', {
-      const response = await fetch('http://localhost:3001/signup', {
+      // const response = await fetch('http://localhost:3001/signup', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/signup', {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

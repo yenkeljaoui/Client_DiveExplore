@@ -21,11 +21,12 @@ const PersonalArea = ({ currentUser }) => {
       fetchUserData();
     }
   }, [currentUser]);
-
+  
   const fetchUserData = async () => {
     try {
       // Fetch all posts
-      const postsResponse = await fetch('http://localhost:3001/posts');
+      // const postsResponse = await fetch('http://localhost:3001/posts');
+      const postsResponse = await fetch('https://serverdiveexplore.onrender.com/posts');
       const postsData = await postsResponse.json();
       
       // Filter posts to get those liked, saved, and shared by the current user
@@ -37,14 +38,16 @@ const PersonalArea = ({ currentUser }) => {
 
       const sharedPostsData = postsData.filter(post => post.sharedBy.includes(currentUser));
       setSharedPosts(sharedPostsData);
-  
+      
       // Fetch user posts
-      const userPostsResponse = await fetch(`http://localhost:3001/posts/${currentUser}`);
+      // const userPostsResponse = await fetch(`http://localhost:3001/posts/${currentUser}`);
+      const userPostsResponse = await fetch(`https://serverdiveexplore.onrender.com/posts/${currentUser}`);
       const userPostsData = await userPostsResponse.json();
       setUserPosts(userPostsData);
   
       // Fetch following
-      const followingResponse = await fetch(`http://localhost:3001/follow/${currentUser}`);
+      // const followingResponse = await fetch(`http://localhost:3001/follow/${currentUser}`);
+      const followingResponse = await fetch(`https://serverdiveexplore.onrender.com/follow/${currentUser}`);
       const followingData = await followingResponse.json();
       setFollowing(followingData);
   
@@ -52,11 +55,13 @@ const PersonalArea = ({ currentUser }) => {
       console.error('Error fetching user data:', err);
     }
   };
-
+  
   const handleDeletePost = async (postId) => {
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
-        await fetch(`http://localhost:3001/posts/${postId}`, {
+        // await fetch(`http://localhost:3001/posts/${postId}`, {
+        await fetch(`https://serverdiveexplore.onrender.com/posts/${postId}`, {
+
           method: 'DELETE',
         });
         setUserPosts(userPosts.filter((post) => post._id !== postId));
@@ -95,9 +100,11 @@ const PersonalArea = ({ currentUser }) => {
     if (newPostMedia) {
       formData.append('media', newPostMedia);
     }
-  
+    
     try {
-      const response = await fetch(`http://localhost:3001/posts/${editPostId}`, {
+      // const response = await fetch(`http://localhost:3001/posts/${editPostId}`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${editPostId}`, {
+
         method: 'PUT',
         body: formData,
       });
@@ -122,7 +129,9 @@ const PersonalArea = ({ currentUser }) => {
   
   const handleUnfollowUser = async (username) => {
     try {
-      await fetch('http://localhost:3001/unfollow', {
+      // await fetch('http://localhost:3001/unfollow', {
+      await fetch('https://serverdiveexplore.onrender.com/unfollow', {
+
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ currentUser, targetUser: username }),

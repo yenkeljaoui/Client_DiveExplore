@@ -6,10 +6,10 @@ const divingSpots = [
      { number: 12, name: 'Red Sea', location: 'Egypt', description: 'A popular diving destination with clear water and vibrant coral reefs.', fish: ['Butterflyfish', 'Angelfish', 'Moray Eels'],dislikes: 0, latitude: 27.2167, longitude: 33.8333 },
      { number: 41, name: 'Ashdod', location: 'Israel', description: 'A beautiful coastal city with amazing diving spots.', fish: ['Sardines', 'Tuna', 'Mackerel'],dislikes: 0, latitude: 31.8067, longitude: 34.6415 },
   ];
-  
   const sendData = async (data) => {
     try {
-      const response = await fetch('http://localhost:3001/dive-spots/add_dive_spot', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/dive-spots/add_dive_spot', {
+      // const response = await fetch('http://localhost:3001/dive-spots/add_dive_spot', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
