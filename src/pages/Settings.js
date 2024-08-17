@@ -30,7 +30,8 @@ const Settings = ({ currentUser, setCurrentUser }) => {
     }
 
     try {
-      const response = await fetch('http://localhost:3001/settings/change-password', {
+      // const response = await fetch('http://localhost:3001/settings/change-password', {
+      const response = await fetch('https://serverdiveexplore.onrender.com/settings/change-password', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -55,7 +56,8 @@ const Settings = ({ currentUser, setCurrentUser }) => {
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch('http://localhost:3001/settings/delete-account', {
+      // const response = await fetch('http://localhost:3001/settings/delete-account', {
+        const response = await fetch('https://serverdiveexplore.onrender.com/settings/delete-account', {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',

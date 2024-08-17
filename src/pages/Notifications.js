@@ -21,7 +21,8 @@ const Notifications = ({ currentUser }) => {
   const fetchNotifications = async () => {
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/notifications/${currentUser}`);
+      // const response = await fetch(`http://localhost:3001/notifications/${currentUser}`);
+      const response = await fetch(`https://serverdiveexplore.onrender.com/notifications/${currentUser}`);
       if (!response.ok) throw new Error(`Error fetching notifications: ${response.statusText}`);
       const notificationsData = await response.json();
       setNotifications(notificationsData);
@@ -45,7 +46,9 @@ const Notifications = ({ currentUser }) => {
 
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
+      // const response = await fetch(`http://localhost:3001/posts/${selectedPost._id}/comment`, {
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${selectedPost._id}}`, {
+
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -72,7 +75,8 @@ const Notifications = ({ currentUser }) => {
   const handleShowLikers = async (postId) => {
     try {
       setError('');
-      const response = await fetch(`http://localhost:3001/posts/${postId}/likers`);
+      // const response = await fetch(`http://localhost:3001/posts/${postId}/likers`);
+      const response = await fetch(`https://serverdiveexplore.onrender.com/posts/${postId}/likers`);
       if (!response.ok) throw new Error(`Error fetching likers: ${response.statusText}`);
       const likersData = await response.json();
       setLikers(likersData);
