@@ -1,0 +1,79 @@
+/* Notifications.css */
+.notifications-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-image: url('../assets/images/background.personalarea.jpg');
+    background-size: cover;
+    background-position: center;
+    min-height: 150vh;
+}
+
+.notification {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(33, 171, 221, 0.513);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(212, 9, 9, 0.2);
+    padding: 20px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.notification-title {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #586cb1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.notification-description {
+    margin-bottom: 10px;
+}
+
+.notification img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.notification-username {
+    font-size: 1.3em;
+    color: #ff0000;
+}
+
+a {
+    color: #fbff00;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+
+
+.likers-modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    background: var(--modal-bg-color);
+    padding: 20px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px var(--modal-box-shadow-color);
+}
+  
+  .comments-overlay,
+  .ReactModal__Overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }

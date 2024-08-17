@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from 'react';
 import { Route, Routes, Navigate } from 'react-router-dom';
 import './App.css';
@@ -11,6 +10,9 @@ import DiveSpots from './pages/DiveSpots';
 import DiveSpotDetails from './pages/DiveSpotDetails';
 import PersonalArea from './pages/PersonalArea';
 import PersonalAreaView from './pages/PersonalAreaView';
+import Settings from './pages/Settings';
+import Notifications from './pages/Notifications';
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -51,9 +53,9 @@ function App() {
         <Route path="/dive-spot/:id" element={currentUser ? <DiveSpotDetails currentUser={currentUser} /> : <Navigate to="/signin" />} />
         <Route path="/personal-area" element={currentUser ? <PersonalArea currentUser={currentUser} /> : <Navigate to="/signin" />} />
         <Route path="/:username" element={currentUser ? <Home currentUser={currentUser} /> : <Navigate to="/signin" />} />
-
-        <Route path="/user/:username" element={currentUser ? <PersonalAreaView currentUser={currentUser} /> : <Navigate to="/signin" />} />        
-      
+        <Route path="/user/:username" element={currentUser ? <PersonalAreaView currentUser={currentUser} /> : <Navigate to="/signin" />} />
+        <Route path="/notifications" element={currentUser ? <Notifications currentUser={currentUser} /> : <Navigate to="/signin" />} />
+        <Route path="/settings" element={currentUser ? <Settings currentUser={currentUser} setCurrentUser={setCurrentUser} /> : <Navigate to="/signin" />} />
       </Routes>
     </div>
   );

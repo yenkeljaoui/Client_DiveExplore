@@ -1,3 +1,9 @@
+# DiveExplore - Client
+This repository contains the client-side code for the DiveExplore web application.
+
+## Related Repositories
+- [DiveExplore - Server](https://github.com/YoanWaza/serverDiveExplore)
+
 # My React App
 
 ## Installation
